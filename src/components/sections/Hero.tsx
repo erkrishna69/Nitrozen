@@ -1,132 +1,204 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Server, Users, Music, Activity, Cpu, Zap, Headphones, Clock, Terminal } from "lucide-react";
+import { Terminal, Bot, Play, Music, Users, ChevronRight, Activity, Clock } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
-// Helper to format large numbers
-const formatNumber = (num: number) => {
-  if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
-  if (num >= 1000) return (num / 1000).toFixed(1) + "K";
-  return num.toString();
-};
+function formatDuration(ms: number) {
+  if (!ms) return "0:00";
+  const seconds = Math.floor(ms / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+}
 
-export default function Stats() {
+export default function Hero() {
   const [mounted, setMounted] = useState(false);
-  const [stats, setStats] = useState({
-    totalServers: 0,
-    activeUsers: 0,
-    mainServerMembers: 0,
-    songsPlayed: 0,
-    nodesOnline: 0,
-    voiceConnections: 0,
-    commandsRun: 0,
-    liveSessions: 0,
-    uptime: "0.00",
-    latencies: { bot: 0, db: 0, api: 0 }
-  });
-  const [loading, setLoading] = useState(true);
+  const [liveData, setLiveData] = useState<any>(null);
 
   useEffect(() => {
     setMounted(true);
-
-    // Fetch real data from the bot API
-    const fetchStats = async () => {
-      try {
-        const fetchStart = Date.now();
-        const apiBase = process.env.NEXT_PUBLIC_API_URL || `${window.location.protocol}//${window.location.hostname}:3001/api`;
-        const res = await fetch(`${apiBase}/stats`).catch(() => null);
-        if (res && res.ok) {
-          const data = await res.json();
-          // Calculate website latency
-          data.latencies.website = Date.now() - fetchStart;
-          setStats(data);
-        }
-      } catch (err) {
-        // Silently ignore to avoid dev overlay
-      } finally {
-        setLoading(false);
-      }
+    const fetchLive = () => {
+      fetch(`/api/stats`)
+        .then(res => {
+          if (!res.ok) throw new Error("Failed");
+          return res.json();
+        })
+        .then(data => setLiveData(data))
+        .catch(() => { });
     };
-
-    fetchStats();
-    // Poll every 30 seconds
-    const interval = setInterval(fetchStats, 30000);
+    fetchLive();
+    const interval = setInterval(fetchLive, 5000); // refresh live activity every 5 seconds
     return () => clearInterval(interval);
   }, []);
 
   if (!mounted) return null;
 
-  const statsData = [
-    { label: "Total Servers", value: stats.totalServers, icon: Server, color: "text-blue-400" },
-    { label: "Active Users", value: stats.activeUsers, icon: Users, color: "text-purple-400" },
-    { label: "Songs Played", value: stats.songsPlayed, icon: Music, color: "text-pink-400" },
-    { label: "Main Server", value: stats.mainServerMembers, icon: Users, color: "text-green-400", suffix: " Members" },
-    { label: "Voice Connections", value: stats.voiceConnections, icon: Headphones, color: "text-indigo-400" },
-    { label: "Commands Run", value: stats.commandsRun, icon: Terminal, color: "text-yellow-400" },
-    { label: "Bot Latency", value: stats.latencies?.bot || 0, icon: Activity, color: "text-red-400", suffix: "ms" },
-    { label: "DB Latency", value: stats.latencies?.db || 0, icon: Zap, color: "text-orange-400", suffix: "ms" },
+  const nowPlaying = liveData?.liveActivity?.nowPlaying || {
+    title: "Starboy (feat. Daft Punk)",
+    author: "The Weeknd",
+    position: 84000,
+    length: 230000,
+    isAi: true
+  };
+
+  const upcoming = liveData?.liveActivity?.upcoming?.length > 0 ? liveData?.liveActivity?.upcoming : [
+    { title: "Blinding Lights", author: "The Weeknd" },
+    { title: "I Feel It Coming", author: "The Weeknd" }
   ];
 
+  const serverCount = liveData?.totalServers || "10k+";
+  const activeNode = liveData?.liveActivity?.node || "KXO 2.0";
+
   return (
-    <section id="stats" className="py-24 relative overflow-hidden">
+    <section className="relative min-h-screen pt-32 pb-20 overflow-hidden flex items-center">
+      {/* Dynamic Background Elements */}
+      <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-[var(--color-brand-blue)]/20 rounded-full blur-[120px] mix-blend-screen animate-float"></div>
+      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-[var(--color-brand-purple)]/20 rounded-full blur-[150px] mix-blend-screen animate-float" style={{ animationDelay: '2s' }}></div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-16">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+
+          {/* Left Column: Copy */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-4"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="max-w-2xl"
           >
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-            <span className="text-xs font-bold text-gray-300 tracking-widest uppercase">Live Network</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-brand-blue)]/10 border border-[var(--color-brand-blue)]/20 text-[var(--color-brand-blue)] text-sm font-semibold mb-6">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-brand-blue)] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--color-brand-blue)]"></span>
+              </span>
+              Nitrozen 2.0 is live
+            </div>
+
+            <h1 className="text-5xl lg:text-7xl font-black text-white leading-tight tracking-tighter mb-6">
+              AI-Powered <br />
+              Music Experience <br />
+              <span className="neon-text">for Discord</span>
+            </h1>
+
+            <p className="text-lg text-gray-400 mb-8 max-w-xl leading-relaxed">
+              Transform your server's vibe with ultra-low latency playback, smart AI playmixes, and crystal clear 24/7 audio quality.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+              <Link href="https://discord.com/oauth2/authorize?client_id=1417772882477449226&permissions=368438745&scope=bot+applications.commands" target="_blank" className="relative group px-8 py-4 rounded-xl bg-[var(--color-brand-blue)] overflow-hidden">
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
+                <span className="relative z-10 flex items-center justify-center gap-2 text-[var(--color-brand-black)] font-bold text-lg">
+                  <Bot className="w-5 h-5" />
+                  Invite Bot
+                </span>
+              </Link>
+
+              <Link href="#stats" className="px-8 py-4 rounded-xl glass-card text-white font-bold text-lg hover:bg-white/5 transition-colors flex items-center justify-center gap-2">
+                <Terminal className="w-5 h-5 text-gray-400" />
+                Live Stats
+              </Link>
+            </div>
+
+            <div className="flex items-center gap-6 pt-4 text-sm text-gray-500 font-medium mt-6">
+              <div className="flex items-center gap-2">
+                <Users className="w-4 h-4" />
+                <span>Trusted by <strong className="text-white">{serverCount}</strong> Servers</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Activity className="w-4 h-4" />
+                <span>99.99% Uptime</span>
+              </div>
+            </div>
           </motion.div>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-3xl md:text-5xl font-bold text-white tracking-tight"
+          {/* Right Column: Fake Dashboard UI */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="relative lg:ml-auto w-full max-w-md"
           >
-            Powering thousands of <br />
-            <span className="neon-text-purple text-[var(--color-brand-purple)]">communities</span>
-          </motion.h2>
-        </div>
+            {/* Glow Behind Dashboard */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-[var(--color-brand-blue)] to-[var(--color-brand-purple)] rounded-3xl blur-2xl opacity-20"></div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          {statsData.map((stat, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.05, duration: 0.4 }}
-              className="glass-card rounded-2xl p-6 flex flex-col items-center text-center group hover:bg-white/5 transition-colors relative overflow-hidden"
-            >
-              {/* Hover Glow */}
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-
-              <div className={`p-3 rounded-xl bg-black/40 border border-white/5 mb-4 ${stat.color}`}>
-                <stat.icon className="w-6 h-6" />
+            <div className="glass-card rounded-3xl p-6 relative border border-white/10 shadow-2xl">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-white font-bold text-sm tracking-widest uppercase flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                  Live Activity
+                </h3>
+                <span className="text-xs font-mono text-[var(--color-brand-blue)] bg-[var(--color-brand-blue)]/10 px-2 py-1 rounded">
+                  Node: {activeNode}
+                </span>
               </div>
 
-              <h4 className="text-3xl md:text-4xl font-black text-white tracking-tighter mb-1">
-                {loading ? (
-                  <span className="inline-block w-16 h-8 bg-white/10 rounded animate-pulse"></span>
-                ) : (
-                  <>
-                    {typeof stat.value === "string" ? stat.value : formatNumber(stat.value)}
-                    {stat.suffix && <span className="text-xl text-gray-500">{stat.suffix}</span>}
-                  </>
-                )}
-              </h4>
+              {/* Now Playing Widget */}
+              <div className="bg-white/5 rounded-2xl p-4 mb-4 border border-white/5">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center shadow-lg relative overflow-hidden">
+                    {/* Fake Waveform Animation */}
+                    <div className="absolute bottom-0 w-full flex items-end justify-center gap-1 p-2 h-full opacity-50">
+                      {[1, 2, 3, 4].map((i) => (
+                        <motion.div
+                          key={i}
+                          className="w-1.5 bg-[var(--color-brand-blue)] rounded-t-sm"
+                          animate={{ height: ["20%", "80%", "40%", "100%", "20%"] }}
+                          transition={{ repeat: Infinity, duration: 1.5, delay: i * 0.2 }}
+                        />
+                      ))}
+                    </div>
+                    <Music className="w-6 h-6 text-white relative z-10" />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-bold truncate max-w-[200px]">{nowPlaying.title}</h4>
+                    <p className="text-gray-400 text-sm truncate max-w-[200px]">{nowPlaying.author}</p>
+                    {nowPlaying.isAi && (
+                      <span className="inline-block mt-1 text-[10px] uppercase tracking-wider font-bold text-[var(--color-brand-purple)] bg-[var(--color-brand-purple)]/10 px-2 py-0.5 rounded">
+                        AI Radio
+                      </span>
+                    )}
+                  </div>
+                </div>
 
-              <p className="text-sm text-gray-400 font-medium">
-                {stat.label}
-              </p>
-            </motion.div>
-          ))}
+                {/* Progress Bar */}
+                <div className="space-y-2">
+                  <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                    <motion.div
+                      className="h-full bg-gradient-to-r from-[var(--color-brand-blue)] to-[var(--color-brand-purple)]"
+                      style={{ width: `${(nowPlaying.position / nowPlaying.length) * 100}%` }}
+                    />
+                  </div>
+                  <div className="flex justify-between text-xs text-gray-500 font-mono">
+                    <span>{formatDuration(nowPlaying.position)}</span>
+                    <span>{formatDuration(nowPlaying.length)}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Queue Preview */}
+              <div>
+                <h5 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Up Next</h5>
+                <div className="space-y-2">
+                  {upcoming.map((track: any, i: number) => (
+                    <div key={i} className="flex items-center justify-between p-2 rounded-lg hover:bg-white/5 transition-colors group cursor-pointer">
+                      <div className="flex items-center gap-3">
+                        <span className="text-gray-600 font-mono text-sm group-hover:text-[var(--color-brand-blue)] transition-colors">0{i + 1}</span>
+                        <div>
+                          <p className="text-sm font-medium text-gray-200 truncate max-w-[150px]">{track.title}</p>
+                          <p className="text-xs text-gray-500 truncate max-w-[150px]">{track.author}</p>
+                        </div>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-gray-600 group-hover:text-[var(--color-brand-blue)] transition-colors" />
+                    </div>
+                  ))}
+                  {upcoming.length === 0 && (
+                    <div className="text-center p-2 text-sm text-gray-500">Queue is empty</div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
