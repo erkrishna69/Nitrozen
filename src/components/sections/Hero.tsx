@@ -16,18 +16,18 @@ function formatDuration(ms: number) {
 export default function Hero() {
   const [mounted, setMounted] = useState(false);
   const [liveData, setLiveData] = useState<any>(null);
-  
+
   useEffect(() => {
     setMounted(true);
     const fetchLive = () => {
-      const apiBase = `${window.location.protocol}//${window.location.hostname}:3001/api`;
+      const apiBase = process.env.NEXT_PUBLIC_API_URL || `${window.location.protocol}//${window.location.hostname}:3001/api`;
       fetch(`${apiBase}/stats`)
         .then(res => {
           if (!res.ok) throw new Error("Failed");
           return res.json();
         })
         .then(data => setLiveData(data))
-        .catch(() => {});
+        .catch(() => { });
     };
     fetchLive();
     const interval = setInterval(fetchLive, 5000); // refresh live activity every 5 seconds
@@ -60,9 +60,9 @@ export default function Hero() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-          
+
           {/* Left Column: Copy */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
@@ -75,17 +75,17 @@ export default function Hero() {
               </span>
               Nitrozen 2.0 is live
             </div>
-            
+
             <h1 className="text-5xl lg:text-7xl font-black text-white leading-tight tracking-tighter mb-6">
               AI-Powered <br />
               Music Experience <br />
               <span className="neon-text">for Discord</span>
             </h1>
-            
+
             <p className="text-lg text-gray-400 mb-8 max-w-xl leading-relaxed">
               Transform your server's vibe with ultra-low latency playback, smart AI playmixes, and crystal clear 24/7 audio quality.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <Link href="https://discord.com/oauth2/authorize?client_id=1417772882477449226&permissions=368438745&scope=bot+applications.commands" target="_blank" className="relative group px-8 py-4 rounded-xl bg-[var(--color-brand-blue)] overflow-hidden">
                 <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
@@ -94,13 +94,13 @@ export default function Hero() {
                   Invite Bot
                 </span>
               </Link>
-              
+
               <Link href="#stats" className="px-8 py-4 rounded-xl glass-card text-white font-bold text-lg hover:bg-white/5 transition-colors flex items-center justify-center gap-2">
                 <Terminal className="w-5 h-5 text-gray-400" />
                 Live Stats
               </Link>
             </div>
-            
+
             <div className="flex items-center gap-6 pt-4 text-sm text-gray-500 font-medium mt-6">
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4" />
@@ -122,7 +122,7 @@ export default function Hero() {
           >
             {/* Glow Behind Dashboard */}
             <div className="absolute inset-0 bg-gradient-to-tr from-[var(--color-brand-blue)] to-[var(--color-brand-purple)] rounded-3xl blur-2xl opacity-20"></div>
-            
+
             <div className="glass-card rounded-3xl p-6 relative border border-white/10 shadow-2xl">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-white font-bold text-sm tracking-widest uppercase flex items-center gap-2">
@@ -165,7 +165,7 @@ export default function Hero() {
                 {/* Progress Bar */}
                 <div className="space-y-2">
                   <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                    <motion.div 
+                    <motion.div
                       className="h-full bg-gradient-to-r from-[var(--color-brand-blue)] to-[var(--color-brand-purple)]"
                       style={{ width: `${(nowPlaying.position / nowPlaying.length) * 100}%` }}
                     />
@@ -184,7 +184,7 @@ export default function Hero() {
                   {upcoming.map((track: any, i: number) => (
                     <div key={i} className="flex items-center justify-between p-2 rounded-lg hover:bg-white/5 transition-colors group cursor-pointer">
                       <div className="flex items-center gap-3">
-                        <span className="text-gray-600 font-mono text-sm group-hover:text-[var(--color-brand-blue)] transition-colors">0{i+1}</span>
+                        <span className="text-gray-600 font-mono text-sm group-hover:text-[var(--color-brand-blue)] transition-colors">0{i + 1}</span>
                         <div>
                           <p className="text-sm font-medium text-gray-200 truncate max-w-[150px]">{track.title}</p>
                           <p className="text-xs text-gray-500 truncate max-w-[150px]">{track.author}</p>
