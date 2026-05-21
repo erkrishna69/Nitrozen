@@ -27,7 +27,7 @@ export default function Community() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const apiBase = `${window.location.protocol}//${window.location.hostname}:3001/api`;
+        const apiBase = process.env.NEXT_PUBLIC_API_URL || `${window.location.protocol}//${window.location.hostname}:3001/api`;
         const res = await fetch(`${apiBase}/stats`).catch(() => null);
         if (res && res.ok) {
           const data = await res.json();
