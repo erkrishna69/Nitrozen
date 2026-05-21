@@ -29,13 +29,12 @@ export default function Stats() {
 
   useEffect(() => {
     setMounted(true);
-    
+
     // Fetch real data from the bot API
     const fetchStats = async () => {
       try {
         const fetchStart = Date.now();
-        const apiBase = `${window.location.protocol}//${window.location.hostname}:3001/api`;
-        const res = await fetch(`${apiBase}/stats`).catch(() => null);
+        const res = await fetch(`/api/stats`).catch(() => null);
         if (res && res.ok) {
           const data = await res.json();
           // Calculate website latency
@@ -48,7 +47,7 @@ export default function Stats() {
         setLoading(false);
       }
     };
-    
+
     fetchStats();
     // Poll every 30 seconds
     const interval = setInterval(fetchStats, 30000);
@@ -81,8 +80,8 @@ export default function Stats() {
             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
             <span className="text-xs font-bold text-gray-300 tracking-widest uppercase">Live Network</span>
           </motion.div>
-          
-          <motion.h2 
+
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -106,11 +105,11 @@ export default function Stats() {
             >
               {/* Hover Glow */}
               <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              
+
               <div className={`p-3 rounded-xl bg-black/40 border border-white/5 mb-4 ${stat.color}`}>
                 <stat.icon className="w-6 h-6" />
               </div>
-              
+
               <h4 className="text-3xl md:text-4xl font-black text-white tracking-tighter mb-1">
                 {loading ? (
                   <span className="inline-block w-16 h-8 bg-white/10 rounded animate-pulse"></span>
@@ -121,7 +120,7 @@ export default function Stats() {
                   </>
                 )}
               </h4>
-              
+
               <p className="text-sm text-gray-400 font-medium">
                 {stat.label}
               </p>
