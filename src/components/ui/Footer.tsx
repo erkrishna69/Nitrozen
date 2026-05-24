@@ -1,7 +1,18 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePageTransition } from "./PageTransition";
 
 export default function Footer() {
+  const { startTransition } = usePageTransition();
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith("#") || href.startsWith("http")) return;
+    e.preventDefault();
+    startTransition(href);
+  };
+
   return (
     <footer className="relative border-t border-[var(--color-brand-border)] bg-[var(--color-brand-dark)] overflow-hidden mt-20">
       {/* Glow Divider */}
@@ -11,12 +22,17 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           <div className="lg:col-span-2">
-            <Link href="/" className="inline-flex items-center gap-3 mb-6 group">
+            <Link 
+              href="/" 
+              onClick={(e) => handleNavClick(e, "/")}
+              className="inline-flex items-center gap-3 mb-6 group"
+            >
               <div className="relative w-10 h-10 flex-shrink-0">
                 <Image
                   src="/assets/icon.png"
                   alt="Nitrozen Official Logo"
                   fill
+                  sizes="40px"
                   className="object-contain drop-shadow-[0_0_8px_rgba(0,229,255,0.5)] group-hover:drop-shadow-[0_0_14px_rgba(0,229,255,0.8)] transition-all"
                 />
               </div>
@@ -39,7 +55,15 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-bold mb-6">Product</h4>
             <ul className="space-y-4">
-              <li><Link href="/features" className="text-gray-400 hover:text-white transition-colors">Features</Link></li>
+              <li>
+                <Link 
+                  href="/features" 
+                  onClick={(e) => handleNavClick(e, "/features")}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  Features
+                </Link>
+              </li>
               <li><Link href="/features#commands" className="text-gray-400 hover:text-white transition-colors">Commands</Link></li>
               <li><Link href="https://discord.com/oauth2/authorize?client_id=1417772882477449226&permissions=368438745&scope=bot+applications.commands" className="text-[var(--color-brand-blue)] hover:text-white transition-colors">Premium</Link></li>
             </ul>
@@ -48,9 +72,33 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-bold mb-6">Legal</h4>
             <ul className="space-y-4">
-              <li><Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/terms" className="text-gray-400 hover:text-white transition-colors">Terms of Service</Link></li>
-              <li><Link href="/refund" className="text-gray-400 hover:text-white transition-colors">Refund Policy</Link></li>
+              <li>
+                <Link 
+                  href="/privacy" 
+                  onClick={(e) => handleNavClick(e, "/privacy")}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/terms" 
+                  onClick={(e) => handleNavClick(e, "/terms")}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  Terms of Service
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/refund" 
+                  onClick={(e) => handleNavClick(e, "/refund")}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  Refund Policy
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

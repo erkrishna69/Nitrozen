@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Syne, Outfit } from "next/font/google";
 import "./globals.css";
 import CursorTracker from "@/components/ui/CursorTracker";
+import PageTransitionProvider from "@/components/ui/PageTransition";
 
-const inter = Inter({
-  variable: "--font-inter",
+const syne = Syne({
+  variable: "--font-syne",
+  subsets: ["latin"],
+  weight: ["700", "800"],
+});
+
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
 });
 
@@ -25,15 +32,19 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} h-full antialiased dark`}
+      className={`${syne.variable} ${outfit.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex flex-col bg-[var(--color-brand-black)] text-gray-200">
-        {/* Glowing cursor ring – CursorTracker drives its position */}
-        <div className="cursor-ring" id="cursor" />
-        <CursorTracker />
-        <main className="flex-1 flex flex-col relative">
-          {children}
-        </main>
+      <body className="min-h-full flex flex-col bg-[#08080f] text-gray-200 font-outfit">
+        <div className="noise-overlay" />
+        <div className="scanlines" />
+        <PageTransitionProvider>
+          {/* Glowing cursor ring – CursorTracker drives its position */}
+          <div className="cursor-ring" id="cursor" />
+          <CursorTracker />
+          <main className="flex-1 flex flex-col relative">
+            {children}
+          </main>
+        </PageTransitionProvider>
       </body>
     </html>
   );

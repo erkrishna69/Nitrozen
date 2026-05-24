@@ -1,8 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Server, Users, Music, Activity, Cpu, Zap, Headphones, Clock, Terminal } from "lucide-react";
+import { Server, Users, Music, Activity, Cpu, Zap, Headphones, Clock, Terminal, ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePageTransition } from "../ui/PageTransition";
 
 // Helper to format large numbers
 const formatNumber = (num: number) => {
@@ -13,6 +15,7 @@ const formatNumber = (num: number) => {
 
 export default function Stats() {
   const [mounted, setMounted] = useState(false);
+  const { startTransition } = usePageTransition();
   const [stats, setStats] = useState({
     totalServers: 0,
     activeUsers: 0,
@@ -68,7 +71,7 @@ export default function Stats() {
   ];
 
   return (
-    <section id="stats" className="py-24 relative overflow-hidden">
+    <section id="stats" className="py-24 relative overflow-hidden bg-[var(--color-brand-black)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
           <motion.div
@@ -93,24 +96,29 @@ export default function Stats() {
           </motion.h2>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {statsData.map((stat, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.05, duration: 0.4 }}
-              className="glass-card rounded-2xl p-6 flex flex-col items-center text-center group hover:bg-white/5 transition-colors relative overflow-hidden"
+              initial={{ opacity: 0, scale: 0.5, y: 50 }}
+              whileInView={{ opacity: 1, scale: 1, y: 0 }}
+              viewport={{ once: false, margin: "-100px" }}
+              transition={{ 
+                duration: 0.8, 
+                delay: i * 0.1,
+                type: "spring",
+                bounce: 0.4
+              }}
+              className="glass-card p-8 rounded-[2rem] flex flex-col items-center text-center group hover:bg-white/5 transition-colors relative overflow-hidden"
             >
               {/* Hover Glow */}
               <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
-              <div className={`p-3 rounded-xl bg-black/40 border border-white/5 mb-4 ${stat.color}`}>
+              <div className={`inline-flex p-4 rounded-2xl bg-white/5 mb-4 group-hover:scale-110 transition-transform ${stat.color}`}>
                 <stat.icon className="w-6 h-6" />
               </div>
 
-              <h4 className="text-3xl md:text-4xl font-black text-white tracking-tighter mb-1">
+              <h3 className="text-4xl font-black text-white mb-2 tracking-tighter">
                 {loading ? (
                   <span className="inline-block w-16 h-8 bg-white/10 rounded animate-pulse"></span>
                 ) : (
@@ -119,14 +127,34 @@ export default function Stats() {
                     {stat.suffix && <span className="text-xl text-gray-500">{stat.suffix}</span>}
                   </>
                 )}
-              </h4>
+              </h3>
 
-              <p className="text-sm text-gray-400 font-medium">
+              <p className="text-sm text-gray-500 font-bold uppercase tracking-widest">
                 {stat.label}
               </p>
             </motion.div>
           ))}
         </div>
+
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+          className="mt-16 text-center"
+        >
+          <Link 
+            href="/stats"
+            onClick={(e) => {
+              e.preventDefault();
+              startTransition("/stats");
+            }}
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-[var(--color-brand-blue)]/50 transition-all text-white font-bold group"
+          >
+            View Detailed Analytics
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </motion.div>
       </div>
     </section>
   );

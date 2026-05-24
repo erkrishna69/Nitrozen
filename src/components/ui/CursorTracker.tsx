@@ -1,61 +1,57 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function CursorTracker() {
+  const [ripples, setRipples] = useState<{ id: number; x: number; y: number }[]>([]);
+
   useEffect(() => {
-    const cursor = document.getElementById("cursor");
-    if (!cursor) return;
-
-    let raf: number;
-    let targetX = 0;
-    let targetY = 0;
-    let currentX = 0;
-    let currentY = 0;
-
-    const onMouseMove = (e: MouseEvent) => {
-      targetX = e.clientX;
-      targetY = e.clientY;
+    const handleMouseMove = (e: MouseEvent) => {
+      // Randomly create ripples when moving
+      if (Math.random() > 0.85) {
+        const id = Date.now() + Math.random();
+        setRipples(prev => [...prev.slice(-8), { id, x: e.clientX, y: e.clientY }]);
+        setTimeout(() => {
+          setRipples(prev => prev.filter(r => r.id !== id));
+        }, 800);
+      }
     };
 
-    const onMouseEnterLink = () => {
-      cursor.style.width = "52px";
-      cursor.style.height = "52px";
-      cursor.style.borderColor = "var(--color-brand-purple)";
-      cursor.style.boxShadow = "0 0 20px var(--color-brand-purple)";
-    };
-
-    const onMouseLeaveLink = () => {
-      cursor.style.width = "32px";
-      cursor.style.height = "32px";
-      cursor.style.borderColor = "var(--color-brand-blue)";
-      cursor.style.boxShadow = "0 0 12px var(--color-brand-blue)";
-    };
-
-    const lerp = (a: number, b: number, n: number) => a + (b - a) * n;
-
-    const animate = () => {
-      currentX = lerp(currentX, targetX, 0.15);
-      currentY = lerp(currentY, targetY, 0.15);
-      cursor.style.transform = `translate(${currentX}px, ${currentY}px) translate(-50%, -50%)`;
-      raf = requestAnimationFrame(animate);
-    };
-
-    window.addEventListener("mousemove", onMouseMove);
-    raf = requestAnimationFrame(animate);
-
-    // Make cursor expand on interactive elements
-    const links = document.querySelectorAll("a, button, [role='button']");
-    links.forEach(el => {
-      el.addEventListener("mouseenter", onMouseEnterLink);
-      el.addEventListener("mouseleave", onMouseLeaveLink);
-    });
-
-    return () => {
-      window.removeEventListener("mousemove", onMouseMove);
-      cancelAnimationFrame(raf);
-    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  return null;
+  return (
+    <div className="fixed inset-0 pointer-events-none z-[10000] overflow-hidden">
+      {/* Liquid Ripples Following Mouse */}
+      <AnimatePresence>
+        {ripples.map(ripple => (
+          <motion.div
+            key={ripple.id}
+            initial={{ opacity: 0.5, scale: 0, x: ripple.x, y: ripple.y }}
+            animate={{ opacity: 0, scale: 1.5 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="absolute -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-[var(--color-brand-blue)]/20"
+            style={{ 
+              boxShadow: "0 0 15px rgba(0, 229, 255, 0.1)",
+              background: "radial-gradient(circle, rgba(0,229,255,0.05) 0%, transparent 70%)",
+              filter: "blur(2px)"
+            }}
+          />
+        ))}
+      </AnimatePresence>
+
+      {/* SVG Filter for a more liquid feel */}
+      <svg className="hidden">
+        <defs>
+          <filter id="water-goo">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur" />
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+          </filter>
+        </defs>
+      </svg>
+    </div>
+  );
 }

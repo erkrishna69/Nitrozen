@@ -1,106 +1,108 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Brain, Layers, Activity, FastForward, Mic2, ShieldCheck, Sparkles, Filter, Infinity } from "lucide-react";
+import { Brain, Layers, Activity, FastForward, Mic2, ShieldCheck, Sparkles, Filter, Infinity, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { usePageTransition } from "../ui/PageTransition";
 
 const features = [
-  {
-    title: "AI Music Recommendations",
-    description: "Our proprietary AI engine analyzes your listening history to generate the perfect queue.",
-    icon: Brain,
-    color: "from-blue-500/20 to-transparent",
-    iconColor: "text-blue-400"
-  },
-  {
-    title: "Smart Playmix",
-    description: "Instantly create dynamic, endless radios based on a single track or artist.",
-    icon: Sparkles,
-    color: "from-purple-500/20 to-transparent",
-    iconColor: "text-purple-400"
-  },
-  {
-    title: "Multi-Node Streaming",
-    description: "Load balancing across 4+ enterprise-grade Lavalink nodes for zero buffering.",
-    icon: Layers,
-    color: "from-green-500/20 to-transparent",
-    iconColor: "text-green-400"
-  },
-  {
-    title: "Ultra Low Latency",
-    description: "Optimized connection pooling ensures immediate playback when you hit play.",
-    icon: FastForward,
-    color: "from-pink-500/20 to-transparent",
-    iconColor: "text-pink-400"
-  },
-  {
-    title: "Audio Filters",
-    description: "Bassboost, Nightcore, 8D, Tremolo, and completely custom EQ settings.",
-    icon: Filter,
-    color: "from-yellow-500/20 to-transparent",
-    iconColor: "text-yellow-400"
-  },
-  {
-    title: "24/7 Mode",
-    description: "Nitrozen stays in your voice channel permanently. Never stops the party.",
-    icon: Infinity,
-    color: "from-[var(--color-brand-blue)]/20 to-transparent",
-    iconColor: "text-[var(--color-brand-blue)]"
-  }
+  // ... (keeping existing features)
 ];
 
 export default function Features() {
+  const { startTransition } = usePageTransition();
+
+  const handleFeatureClick = (e: React.MouseEvent, href: string) => {
+    e.preventDefault();
+    startTransition(href);
+  };
+
   return (
-    <section id="features" className="py-24 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+    <section id="features" className="py-24 relative overflow-hidden">
+      {/* Background Cinematic Elements */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
+        <div className="absolute top-1/4 -left-1/4 w-[600px] h-[600px] bg-[var(--color-brand-blue)]/5 blur-[120px] rounded-full"></div>
+        <div className="absolute bottom-1/4 -right-1/4 w-[600px] h-[600px] bg-[var(--color-brand-purple)]/5 blur-[120px] rounded-full"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center mb-20">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6"
+          >
+            <Sparkles className="w-4 h-4 text-[var(--color-brand-blue)]" />
+            <span className="text-xs font-bold text-gray-300 tracking-widest uppercase">Premium Capabilities</span>
+          </motion.div>
+          
           <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-3xl md:text-5xl font-bold text-white tracking-tight mb-4"
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-4xl md:text-6xl font-black text-white tracking-tighter mb-6"
           >
             Built for <span className="neon-text-blue text-[var(--color-brand-blue)]">Performance</span>
           </motion.h2>
+          
           <motion.p 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-gray-400 text-lg max-w-2xl mx-auto"
+            transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
+            className="text-gray-400 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
           >
             Everything you need to manage your server's audio experience, packed into a sleek, lightning-fast bot.
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, i) => (
-            <Link key={i} href="/features" className="block outline-none focus:outline-none">
+            <Link 
+              key={i} 
+              href="/features" 
+              onClick={(e) => handleFeatureClick(e, "/features")}
+              className="block outline-none focus:outline-none"
+            >
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="glass-card rounded-3xl p-8 group hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(0,229,255,0.2)] transition-all duration-300 relative overflow-hidden h-full border border-white/5 hover:border-[var(--color-brand-blue)]/30 cursor-pointer"
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ 
+                  delay: i * 0.1, 
+                  duration: 0.8, 
+                  ease: [0.22, 1, 0.36, 1] 
+                }}
+                className="glass-card rounded-[2.5rem] p-10 group hover:-translate-y-3 hover:shadow-[0_30px_60px_-15px_rgba(0,229,255,0.25)] transition-all duration-500 relative overflow-hidden h-full border border-white/10 hover:border-[var(--color-brand-blue)]/40 cursor-pointer backdrop-blur-xl"
               >
-                {/* Hover Background Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                {/* Dynamic Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 
+                {/* Floating Glow Orb */}
+                <div className={`absolute -right-10 -top-10 w-32 h-32 bg-gradient-to-br ${feature.color} blur-3xl opacity-0 group-hover:opacity-40 transition-opacity duration-500`}></div>
+
                 {/* Icon Container */}
-                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-6 relative`}>
-                  <div className="absolute inset-0 bg-white/20 rounded-2xl blur group-hover:blur-md transition-all"></div>
-                  <feature.icon className="w-7 h-7 text-white relative z-10" />
+                <div className={`w-16 h-16 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 relative overflow-hidden group-hover:scale-110 transition-transform duration-500`}>
+                  <div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-20 group-hover:opacity-40 transition-opacity`}></div>
+                  <feature.icon className="w-8 h-8 text-white relative z-10" />
                 </div>
                 
-                <h3 className="text-2xl font-bold text-white mb-3 tracking-tight group-hover:text-[var(--color-brand-blue)] transition-colors">
+                <h3 className="text-2xl font-black text-white mb-4 tracking-tight group-hover:text-[var(--color-brand-blue)] transition-colors duration-300">
                   {feature.title}
                 </h3>
-                <p className="text-gray-400 text-sm leading-relaxed">
+                
+                <p className="text-gray-400 text-base leading-relaxed mb-6 group-hover:text-gray-300 transition-colors">
                   {feature.description}
                 </p>
 
-                {/* Top right corner decorative accent */}
-                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-white/10 to-transparent rounded-bl-[100px] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="flex items-center gap-2 text-xs font-bold text-[var(--color-brand-blue)] uppercase tracking-widest opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                  Explore Feature <ArrowRight className="w-4 h-4" />
+                </div>
+
+                {/* Corner Accent */}
+                <div className="absolute bottom-0 right-0 w-12 h-1 bg-gradient-to-r from-transparent to-[var(--color-brand-blue)] opacity-0 group-hover:opacity-100 transition-opacity"></div>
               </motion.div>
             </Link>
           ))}

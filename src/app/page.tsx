@@ -4,7 +4,9 @@ import ActivityFeed from "@/components/sections/ActivityFeed";
 import Stats from "@/components/sections/Stats";
 import Features from "@/components/sections/Features";
 import Voting from "@/components/sections/Voting";
+import SupportedPlatforms from "@/components/sections/SupportedPlatforms";
 import Community from "@/components/sections/Community";
+import FAQ from "@/components/sections/FAQ";
 import Footer from "@/components/ui/Footer";
 
 export default function Home() {
@@ -14,9 +16,11 @@ export default function Home() {
       <Hero />
       <ActivityFeed />
       <Stats />
+      <SupportedPlatforms />
       <Features />
       <Voting />
       <Community />
+      <FAQ />
       <Footer />
     </>
   );
