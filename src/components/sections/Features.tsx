@@ -1,12 +1,54 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Brain, Layers, Activity, FastForward, Mic2, ShieldCheck, Sparkles, Filter, Infinity, ArrowRight } from "lucide-react";
+import { Brain, Layers, Activity, FastForward, Mic2, ShieldCheck, Sparkles, Filter, Infinity, ArrowRight, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { usePageTransition } from "../ui/PageTransition";
 
-const features = [
-  // ... (keeping existing features)
+interface Feature {
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  color: string;
+}
+
+const features: Feature[] = [
+  {
+    title: "AI Playmix",
+    description: "Next-gen AI that understands your vibe and generates perfect recommendations.",
+    icon: Brain,
+    color: "from-blue-500 to-cyan-500"
+  },
+  {
+    title: "Ultra Low Latency",
+    description: "Experience music with zero lag thanks to our optimized global node network.",
+    icon: Activity,
+    color: "from-purple-500 to-pink-500"
+  },
+  {
+    title: "Crystal Clear Audio",
+    description: "High-fidelity 384kbps audio streaming for the ultimate listening experience.",
+    icon: Mic2,
+    color: "from-green-500 to-emerald-500"
+  },
+  {
+    title: "Smart Filters",
+    description: "Apply professional audio filters in real-time with a single click.",
+    icon: Filter,
+    color: "from-yellow-500 to-orange-500"
+  },
+  {
+    title: "24/7 Playback",
+    description: "Your music never stops. Reliable uptime and automatic session resume.",
+    icon: Infinity,
+    color: "from-red-500 to-rose-500"
+  },
+  {
+    title: "Enterprise Security",
+    description: "Bank-grade security protocols to keep your server and data protected.",
+    icon: ShieldCheck,
+    color: "from-indigo-500 to-blue-500"
+  }
 ];
 
 export default function Features() {
