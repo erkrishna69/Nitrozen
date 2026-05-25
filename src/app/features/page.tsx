@@ -151,14 +151,14 @@ export default function FeaturesPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
               {[
-                { name: "Config", desc: "Set up DJ roles, bind to specific channels, and manage bot settings for your server." },
-                { name: "Filters", desc: "Apply real-time audio effects like Bassboost, 8D, Nightcore, Vaporwave, and custom EQs." },
-                { name: "Info", desc: "Check bot latencies, node status, active listeners, and get help for commands." },
-                { name: "Music", desc: "The core engine. Play, pause, skip, seek, shuffle, and control the volume." },
-                { name: "Owner", desc: "Advanced developer utilities for global bans, evaluation, and system restarts." },
-                { name: "Playlist", desc: "Create, save, load, and manage your own custom playlists directly in Discord." }
+                { name: "Config", desc: "Set up DJ roles, bind to specific channels, and manage bot settings for your server.", icon: Cpu },
+                { name: "Filters", desc: "Apply real-time audio effects like Bassboost, 8D, Nightcore, Vaporwave, and custom EQs.", icon: AudioWaveform },
+                { name: "Info", desc: "Check bot latencies, node status, active listeners, and get help for commands.", icon: Globe },
+                { name: "Music", desc: "The core engine. Play, pause, skip, seek, shuffle, and control the volume.", icon: Radio },
+                { name: "Owner", desc: "Advanced developer utilities for global bans, evaluation, and system restarts.", icon: ShieldCheck },
+                { name: "Playlist", desc: "Create, save, load, and manage your own custom playlists directly in Discord.", icon: Sparkles }
               ].map((module, idx) => (
                 <motion.div
                   key={idx}
@@ -169,12 +169,108 @@ export default function FeaturesPage() {
                   className="glass-card rounded-3xl p-8 border border-white/5 hover:border-[var(--color-brand-blue)]/30 transition-colors group"
                 >
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-3 h-3 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]"></div>
+                    <div className="p-2 rounded-xl bg-[var(--color-brand-blue)]/10 text-[var(--color-brand-blue)] group-hover:scale-110 transition-transform">
+                      <module.icon className="w-6 h-6" />
+                    </div>
                     <h3 className="text-2xl font-bold text-white group-hover:text-[var(--color-brand-blue)] transition-colors">{module.name}</h3>
                   </div>
                   <p className="text-gray-400 leading-relaxed">{module.desc}</p>
                 </motion.div>
               ))}
+            </div>
+
+            {/* Basic vs Short Commands Comparison */}
+            <div className="mt-32">
+              <div className="text-center mb-16">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-4"
+                >
+                  Efficiency Optimized
+                </motion.div>
+                <h2 className="text-4xl md:text-6xl font-black text-white tracking-tight mb-6">
+                  Basic vs <span className="neon-text-blue">Short</span> Commands
+                </h2>
+                <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+                  Every basic command has an lightning-fast alias. Save time and dominate the queue with our shorthand system.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Basic Commands Column */}
+                <motion.div
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="glass-card rounded-[2.5rem] p-8 md:p-10 border-white/5 relative overflow-hidden group"
+                >
+                  <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+                    <Zap className="w-32 h-32 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+                    <div className="w-2 h-8 bg-blue-500 rounded-full" />
+                    Basic Commands
+                  </h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    {[
+                      "play", "skip", "stop", "pause", "resume", "queue", 
+                      "nowplaying", "volume", "shuffle", "clear", "loop", "bassboost",
+                      "help", "previous", "autoplay", "lyrics", "recommend", "playlist",
+                      "forward", "rewind", "move", "uptime", "nodestatus"
+                    ].map((cmd) => (
+                      <div key={cmd} className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-blue-500/30 hover:bg-white/[0.05] transition-all group/item">
+                        <span className="text-sm font-bold text-gray-300 group-hover/item:text-blue-400 transition-colors uppercase tracking-wider">/{cmd}</span>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+
+                {/* Short Commands Column */}
+                <motion.div
+                  initial={{ opacity: 0, x: 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="glass-card rounded-[2.5rem] p-8 md:p-10 border-white/5 relative overflow-hidden group"
+                >
+                  <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+                    <Zap className="w-32 h-32 text-blue-400" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+                    <div className="w-2 h-8 bg-[var(--color-brand-blue)] rounded-full shadow-[0_0_15px_rgba(0,229,255,0.5)]" />
+                    Short Commands (Aliases)
+                  </h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    {[
+                      { b: "play", s: "p" },
+                      { b: "skip", s: "s" },
+                      { b: "stop", s: "dc" },
+                      { b: "resume", s: "r" },
+                      { b: "join", s: "j" },
+                      { b: "queue", s: "q" },
+                      { b: "nowplaying", s: "np" },
+                      { b: "volume", s: "vol" },
+                      { b: "bassboost", s: "bb" },
+                      { b: "help", s: "h" },
+                      { b: "previous", s: "prev" },
+                      { b: "autoplay", s: "ap" },
+                      { b: "lyrics", s: "ly" },
+                      { b: "recommend", s: "rec" },
+                      { b: "playlist", s: "pl" },
+                      { b: "forward", s: "fwd" },
+                      { b: "rewind", s: "rwd" },
+                      { b: "move", s: "m" },
+                      { b: "uptime", s: "up" },
+                      { b: "nodestatus", s: "ns" }
+                    ].map((item) => (
+                      <div key={item.s} className="p-4 rounded-2xl bg-[var(--color-brand-blue)]/5 border border-[var(--color-brand-blue)]/10 hover:border-[var(--color-brand-blue)]/50 hover:bg-[var(--color-brand-blue)]/10 transition-all group/item text-center">
+                        <span className="block text-lg font-black text-[var(--color-brand-blue)] group-hover/item:scale-110 transition-transform uppercase tracking-tighter">/{item.s}</span>
+                        <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest mt-1 opacity-60">for {item.b}</span>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              </div>
             </div>
           </div>
 
