@@ -360,7 +360,6 @@ export default function StatsPage() {
                     fillOpacity={1} 
                     fill="url(#glowUsers)" 
                     animationDuration={2000}
-                    animationDelay={300}
                   />
                 </AreaChart>
               </ResponsiveContainer>
