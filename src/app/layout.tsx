@@ -1,18 +1,25 @@
 import type { Metadata } from "next";
-import { Syne, Outfit } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import CursorTracker from "@/components/ui/CursorTracker";
 import PageTransitionProvider from "@/components/ui/PageTransition";
 
-const syne = Syne({
-  variable: "--font-syne",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["700", "800"],
+  display: "swap",
 });
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-plus-jakarta",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -32,9 +39,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${syne.variable} ${outfit.variable} h-full antialiased dark`}
+      className={`${inter.variable} ${plusJakartaSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex flex-col bg-[#08080f] text-gray-200 font-outfit">
+      <body className="min-h-full flex flex-col bg-[#08080f] text-slate-300 font-inter selection:bg-[var(--color-brand-blue)]/30 selection:text-white">
         <div className="noise-overlay" />
         <div className="scanlines" />
         <PageTransitionProvider>

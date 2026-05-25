@@ -75,13 +75,13 @@ export default function Stats() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-4"
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 mb-6"
           >
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-            <span className="text-xs font-bold text-gray-300 tracking-widest uppercase">Live Network</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+            <span className="text-[10px] font-semibold text-slate-400 tracking-[0.2em] uppercase">Live Network Pulse</span>
           </motion.div>
 
           <motion.h2
@@ -89,47 +89,45 @@ export default function Stats() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-3xl md:text-5xl font-bold text-white tracking-tight"
+            className="text-3xl md:text-5xl font-bold text-white tracking-tight-premium text-balance"
           >
             Powering thousands of <br />
-            <span className="neon-text-purple text-[var(--color-brand-purple)]">communities</span>
+            <span className="text-gradient-purple neon-text-purple">communities</span>
           </motion.h2>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {statsData.map((stat, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, scale: 0.5, y: 50 }}
-              whileInView={{ opacity: 1, scale: 1, y: 0 }}
-              viewport={{ once: false, margin: "-100px" }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ 
-                duration: 0.8, 
-                delay: i * 0.1,
-                type: "spring",
-                bounce: 0.4
+                duration: 0.5, 
+                delay: i * 0.05
               }}
-              className="glass-card p-8 rounded-[2rem] flex flex-col items-center text-center group hover:bg-white/5 transition-colors relative overflow-hidden"
+              className="glass-card p-8 rounded-[2rem] flex flex-col items-center text-center group hover:border-[var(--color-brand-purple)]/30 transition-all duration-500 relative overflow-hidden"
             >
-              {/* Hover Glow */}
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              {/* Subtle Gradient Accent */}
+              <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none"></div>
 
-              <div className={`inline-flex p-4 rounded-2xl bg-white/5 mb-4 group-hover:scale-110 transition-transform ${stat.color}`}>
-                <stat.icon className="w-6 h-6" />
+              <div className={`inline-flex p-3.5 rounded-2xl bg-white/5 mb-6 group-hover:scale-110 transition-transform duration-500 ${stat.color}`}>
+                <stat.icon className="w-5 h-5" />
               </div>
 
-              <h3 className="text-4xl font-black text-white mb-2 tracking-tighter">
+              <h3 className="text-3xl md:text-4xl font-bold text-white mb-3 tabular-nums font-mono tracking-tight">
                 {loading ? (
-                  <span className="inline-block w-16 h-8 bg-white/10 rounded animate-pulse"></span>
+                  <span className="inline-block w-16 h-8 bg-white/10 rounded-lg animate-pulse"></span>
                 ) : (
                   <>
                     {typeof stat.value === "string" ? stat.value : formatNumber(stat.value)}
-                    {stat.suffix && <span className="text-xl text-gray-500">{stat.suffix}</span>}
+                    {stat.suffix && <span className="text-lg font-normal text-slate-500 ml-1">{stat.suffix}</span>}
                   </>
                 )}
               </h3>
 
-              <p className="text-sm text-gray-500 font-bold uppercase tracking-widest">
+              <p className="text-[10px] md:text-xs text-slate-500 font-semibold uppercase tracking-[0.15em]">
                 {stat.label}
               </p>
             </motion.div>
@@ -149,10 +147,10 @@ export default function Stats() {
               e.preventDefault();
               startTransition("/stats");
             }}
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-[var(--color-brand-blue)]/50 transition-all text-white font-bold group"
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-[var(--color-brand-blue)]/50 transition-all text-white font-semibold group tracking-premium"
           >
             View Detailed Analytics
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </motion.div>
       </div>

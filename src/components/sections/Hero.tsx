@@ -123,30 +123,26 @@ export default function Hero() {
         >
           {/* Main Title with Cinematic Word Entrance */}
           <div className="mb-10 overflow-hidden">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-[1.1] tracking-tight uppercase">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-[1.1] tracking-tight-premium text-balance uppercase">
               <motion.span 
-                initial={{ x: -100, opacity: 0, rotate: -5 }}
-                animate={{ x: 0, opacity: 1, rotate: 0 }}
+                initial={{ x: -100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
                 className="block"
               >
                 AI-POWERED
               </motion.span>
               <motion.span 
-                initial={{ x: 100, opacity: 0, rotate: 5 }}
-                animate={{ x: 0, opacity: 1, rotate: 0 }}
+                initial={{ x: 100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-violet-400 to-magenta-500"
-                style={{ 
-                  backgroundImage: "linear-gradient(to right, #00E5FF, #B535F6, #FF2E93)",
-                  WebkitBackgroundClip: "text"
-                }}
+                className="block text-gradient-blue"
               >
                 MUSIC
               </motion.span>
               <motion.span 
-                initial={{ y: 50, opacity: 0, scale: 0.8 }}
-                animate={{ y: 0, opacity: 1, scale: 1 }}
+                initial={{ y: 50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
                 className="block"
               >
@@ -160,34 +156,34 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
-            className="text-lg md:text-xl text-gray-400 mb-16 max-w-2xl mx-auto leading-relaxed font-medium tracking-wide uppercase"
+            className="text-lg md:text-xl text-slate-400 mb-16 max-w-2xl mx-auto leading-relaxed font-normal tracking-premium text-pretty"
           >
             Transform your server vibe with ultra-low latency playback, smart AI playmixes, and crystal clear 24/7 audio quality.
           </motion.p>
 
           {/* CTA Buttons - Luxury Refined */}
           <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
+            initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: "spring", damping: 15, delay: 0.7 }}
-            className="flex flex-col sm:flex-row gap-8 justify-center w-full sm:w-auto items-center mb-24"
+            transition={{ type: "spring", damping: 20, delay: 0.7 }}
+            className="flex flex-col sm:flex-row gap-6 justify-center w-full sm:w-auto items-center mb-24"
           >
             <Link 
               href="https://discord.com/oauth2/authorize?client_id=1417772882477449226&permissions=368438745&scope=bot+applications.commands" 
               onClick={handleInviteClick}
               target="_blank" 
-              className="relative px-12 py-5 rounded-2xl bg-white text-black font-black text-xl transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+              className="relative px-10 py-4 rounded-xl bg-white text-black font-semibold text-lg transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(255,255,255,0.1)] tracking-premium"
             >
-              INVITE BOT
+              Invite Bot
             </Link>
 
             <Link 
               href="/stats" 
               onClick={handleStatsClick}
-              className="group px-12 py-5 rounded-2xl border border-white/10 glass-card text-white font-black text-xl hover:bg-white/5 transition-all flex items-center gap-3"
+              className="group px-10 py-4 rounded-xl border border-white/10 glass-card text-white font-semibold text-lg hover:bg-white/5 transition-all flex items-center gap-3 tracking-premium"
             >
-              <span className="text-[var(--color-brand-blue)] group-hover:animate-pulse">{">"}</span>
-              LIVE STATS
+              <span className="text-[var(--color-brand-blue)] group-hover:translate-x-1 transition-transform">→</span>
+              Live Stats
             </Link>
           </motion.div>
 
@@ -199,22 +195,22 @@ export default function Hero() {
             className="flex flex-wrap items-center justify-center gap-12 border-t border-white/5 pt-12 w-full"
           >
             <div className="text-center px-4">
-              <p className="text-4xl font-black text-white mb-1">{serverCount}</p>
-              <span className="text-[10px] font-bold text-gray-500 tracking-[0.2em] uppercase">Trusted Servers</span>
+              <p className="text-4xl font-bold text-white mb-2 tabular-nums font-mono tracking-tight">{serverCount}</p>
+              <span className="text-[10px] font-semibold text-slate-500 tracking-[0.25em] uppercase">Trusted Servers</span>
             </div>
             
             <div className="w-px h-8 bg-white/5 hidden md:block"></div>
 
             <div className="text-center px-4">
-              <p className="text-4xl font-black text-white mb-1">99.9%</p>
-              <span className="text-[10px] font-bold text-gray-500 tracking-[0.2em] uppercase">Uptime Ratio</span>
+              <p className="text-4xl font-bold text-white mb-2 tabular-nums font-mono tracking-tight">99.9%</p>
+              <span className="text-[10px] font-semibold text-slate-500 tracking-[0.25em] uppercase">Uptime Ratio</span>
             </div>
 
             <div className="w-px h-8 bg-white/5 hidden md:block"></div>
 
             <div className="text-center px-4">
-              <p className="text-4xl font-black text-white mb-1">HI-FI</p>
-              <span className="text-[10px] font-bold text-gray-500 tracking-[0.2em] uppercase">Audio Quality</span>
+              <p className="text-4xl font-bold text-white mb-2 font-mono tracking-tight">HI-FI</p>
+              <span className="text-[10px] font-semibold text-slate-500 tracking-[0.25em] uppercase">Audio Quality</span>
             </div>
           </motion.div>
         </motion.div>

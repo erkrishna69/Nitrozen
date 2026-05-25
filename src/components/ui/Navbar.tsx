@@ -76,37 +76,33 @@ export default function Navbar() {
             <Link 
               href="/features" 
               onClick={(e) => handleNavClick(e, "/features")}
-              className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
+              className="text-slate-400 hover:text-white transition-all text-[11px] font-semibold uppercase tracking-[0.15em]"
             >
               Features
             </Link>
             <Link 
               href="/stats" 
               onClick={(e) => handleNavClick(e, "/stats")}
-              className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
+              className="text-slate-400 hover:text-white transition-all text-[11px] font-semibold uppercase tracking-[0.15em]"
             >
               Stats
             </Link>
-            <Link href="/#community" className="text-gray-300 hover:text-white transition-colors text-sm font-medium">Community</Link>
-            <div className="flex items-center gap-4">
+            <Link href="/#community" className="text-slate-400 hover:text-white transition-all text-[11px] font-semibold uppercase tracking-[0.15em]">Community</Link>
+            <div className="flex items-center gap-6 pl-4 border-l border-white/5">
               <Link
                 href="#"
-                className="text-sm font-medium text-gray-300 hover:text-white transition-colors flex items-center gap-2"
+                className="text-[11px] font-semibold text-slate-400 hover:text-white transition-all flex items-center gap-2 uppercase tracking-[0.15em]"
               >
-                <Terminal className="w-4 h-4" />
+                <Terminal className="w-3.5 h-3.5" />
                 Dashboard
               </Link>
               <Link 
                 href="https://discord.com/oauth2/authorize?client_id=1417772882477449226&permissions=368438745&scope=bot+applications.commands" 
                 onClick={handleInviteClick}
-                target="_blank" 
-                className="relative group px-6 py-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-all overflow-hidden"
+                target="_blank"
+                className="px-5 py-2 rounded-lg bg-white text-black font-semibold text-xs tracking-premium hover:scale-105 active:scale-95 transition-all"
               >
-                <span className="relative z-10 text-sm font-bold text-white group-hover:text-[var(--color-brand-blue)] transition-colors">
-                  Invite Bot
-                </span>
-                <div className="absolute inset-0 rounded-full border border-transparent group-hover:border-[var(--color-brand-blue)]/50 transition-all"></div>
-                <div className="absolute inset-0 bg-[var(--color-brand-blue)] opacity-0 group-hover:opacity-10 blur-xl transition-all"></div>
+                Invite Bot
               </Link>
             </div>
           </div>
